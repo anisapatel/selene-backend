@@ -3,10 +3,10 @@ const app = express(); //invoke instance of express library
 //This can be refactored into const app = require("express")()
 const apiRouter = require("./routes/apiRouter");
 
-require("dotenv").config();
+require("dotenv").config(); //configure env file
 const bodyParser = require("body-parser"); //retrieve values from req.body otherwise it is undefined
 const session = require("express-session"); //Require the session for saving user data and giving a user a unique experience.
-const cors = require("cors");
+const cors = require("cors"); //enable cors for cross origin sharing
 const db = require("./db/data/index");
 
 const adminController = require("./controllers/adminController");
