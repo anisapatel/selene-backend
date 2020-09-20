@@ -15,10 +15,26 @@ const productsController = require("./controllers/productsController");
 const usersController = require("./controllers/usersController");
 
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
-app.use(bodyParser.json());
+app.use(cors()); //cross origin requests
+app.use(bodyParser.json()); //initalisign req.body, otherwise it's undefined
 
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
+
+app.use(
+  session({
+    //Create a secret for the cookie store it in .env file
+    //Secret can be anything.
+    secret: process.env.SESSION_SECRET,
+    //this for resaving the cookie false, if true can cause a memory leak.
+    resave: false,
+    //saveUnitialized best false, unless connect to a database.
+    saveUninitialized: false,
+    cookie: {
+      //The max age of the cookie
+      maxAge: 1000 * 60 * 60 * 24 * 14,
+    },
+  })
+);
 
 app.use("/api", apiRouter); //if the endpoint is ./api then go to the apiRouter.js file
 module.exports = app;
