@@ -1,1 +1,4 @@
-module.exports = {};
+//gets admin users
+exports.getAdminUsers = () => {};
+
+//
