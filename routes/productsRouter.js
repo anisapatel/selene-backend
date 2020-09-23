@@ -8,7 +8,7 @@ const {
 
 //reads products from database
 
-productsRouter.get(readAllProducts);
+productsRouter.route("/").get(readAllProducts);
 productsRouter.route("/:id").get(readProduct);
 
 module.exports = productsRouter;

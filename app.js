@@ -1,25 +1,42 @@
+require("dotenv").config(); //configure env file
+const env = process.env.NODE_ENV || "development";
+const bodyParser = require("body-parser"); //retrieve values from req.body otherwise it is undefined
+const session = require("express-session"); //Require the session for saving user data and giving a user a unique experience.
+const cors = require("cors"); //enable cors for cross origin sharing
+
+const mongoose = require("mongoose");
 const express = require("express"); // require instance of express library
 const app = express(); //invoke instance of express library
 //This can be refactored into const app = require("express")()
 const apiRouter = require("./routes/apiRouter");
+if (env === "test") {
+  mongoose.connect(
+    process.env.CONNECTION_STRING_TEST,
+    { useNewUrlParser: true, useUnifiedTopology: true },
+    (err) => {
+      if (err) {
+        console.log("Database Error----------------", err);
+      }
+      console.log("Connected to test database");
+    }
+  );
+} else {
+  mongoose.connect(
+    process.env.CONNECTION_STRING,
+    { useNewUrlParser: true, useUnifiedTopology: true },
+    (err) => {
+      if (err) {
+        console.log("Database Error----------------", err);
+      }
+      console.log("Connected to database");
+    }
+  );
+}
 
-require("dotenv").config(); //configure env file
-const bodyParser = require("body-parser"); //retrieve values from req.body otherwise it is undefined
-const session = require("express-session"); //Require the session for saving user data and giving a user a unique experience.
-const cors = require("cors"); //enable cors for cross origin sharing
-const db = require("./data/db/index");
-
-const adminController = require("./controllers/adminController");
-const cloudinaryController = require("./controllers/cloudinaryController");
-const productsController = require("./controllers/productsController");
-const usersController = require("./controllers/usersController");
-
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors()); //cross origin requests
+// const db = require("./data/db/index");
+// db.on("error", console.error.bind(console, "MongoDB connection error:"));
 app.use(bodyParser.json()); //initalisign req.body, otherwise it's undefined
-
-db.on("error", console.error.bind(console, "MongoDB connection error:"));
-
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   session({
     //Create a secret for the cookie store it in .env file
@@ -35,6 +52,11 @@ app.use(
     },
   })
 );
+setTimeout(() => {
+  //All our endpoints.
+  app.use("/api", apiRouter); //if the endpoint is ./api then go to the apiRouter.js file
+}, 200);
+app.use(cors()); //cross origin requests
+// app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use("/api", apiRouter); //if the endpoint is ./api then go to the apiRouter.js file
 module.exports = app;

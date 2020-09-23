@@ -6,7 +6,7 @@ const {
   removeFromCart,
 } = require("../controllers/usersController");
 
-usersRouter.get(readUserData);
+usersRouter.route("/").get(readUserData);
 usersRouter.route("/cart").post(addToCart);
 usersRouter.route("/cart/:id").delete(removeFromCart);
 

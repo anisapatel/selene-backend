@@ -2,11 +2,24 @@
   "name": "selene-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
-    "start": "node listen.js",
-    "dev": "nodemon listen.js",
-    "test": "mocha spec/app.spec.js"
+    "start": "NODE_ENV=production node listen.js",
+    "dev": "NODE_ENV=development nodemon listen.js",
+    "test": "export NODE_ENV=test && nodemon --exec 'mocha */**.spec.js'",
+    "now-start": "node app.js",
+    "deploy": "now --public --dotenv=.env -d"
+  },
+  "main": "app.js",
+  "proxy": {
+    "/auth/callback": {
+      "target": "http://localhost:5000"
+    },
+    "/api": {
+      "target": "http://localhost:5000"
+    }
+  },
+  "now": {
+    "alias": "selene-backend"
   },
   "repository": {
     "type": "git",
