@@ -52,10 +52,10 @@ app.use(
     },
   })
 );
-setTimeout(() => {
-  //All our endpoints.
-  app.use("/api", apiRouter); //if the endpoint is ./api then go to the apiRouter.js file
-}, 200);
+// setTimeout(() => {
+//All our endpoints.
+app.use("/api", apiRouter); //if the endpoint is ./api then go to the apiRouter.js file
+// }, 200);
 app.use(cors()); //cross origin requests
 // app.use(bodyParser.urlencoded({ extended: true }));
 

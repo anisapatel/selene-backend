@@ -6,7 +6,7 @@ exports.readAllProducts = (req, res, next) => {
   Product.find({}).exec((err, products) => {
     if (err) console.log("Get Product Mongoose Error------------------", err);
     //Always log the data you are returning from the database to check if you are receiving the right data.
-    console.log("products-------------", products);
+    // console.log("products-------------", products);
     res.status(200).send(products);
   });
 };
@@ -16,7 +16,7 @@ exports.readProduct = (req, res, next) => {
   const { id } = req.params;
   Product.findById(id).exec((err, product) => {
     if (err) console.log("Get Single Product Error---------------", err);
-    console.log("product--------------", product);
+    // console.log("product--------------", product);
     res.status(200).json({ product });
   });
 };

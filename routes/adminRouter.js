@@ -8,6 +8,6 @@ const {
 } = require("../controllers/adminController");
 //only admin can create, update and delete products
 adminRouter.route("/").get(getAdminUsers).post(createProduct);
-adminRouter.route("/:id").put(updateProduct).delete(deleteProduct);
+adminRouter.route("/:id").patch(updateProduct).delete(deleteProduct);
 
 module.exports = adminRouter;

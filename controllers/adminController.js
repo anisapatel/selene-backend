@@ -19,7 +19,7 @@ exports.createProduct = (req, res, next) => {
     price,
   });
   newProduct.save(); //save model to database
-  res.status(200).send({ product: newProduct }); //send back to the user the new product
+  res.status(201).send({ product: newProduct }); //send back to the user the new product
 };
 
 //update current product by id so needs a request parameter
@@ -28,15 +28,15 @@ exports.updateProduct = (req, res, next) => {
   //Destruct the update data from the req.body;
   const { name, description, price } = req.body;
   //Find the product, and update it's properties
-  Product.findById(id).exec((err, product) => {
+  Product.findById(id).exec((err, updatedProduct) => {
     if (err) console.log("Updated Product-----------------", err);
-    product.name = name;
-    product.description = description;
-    product.price = price;
-    //Save the product with updated data.
-    product.save();
+    updatedProduct.name = name;
+    updatedProduct.description = description;
+    updatedProduct.price = price;
+    //Save the updatedProduct with updated data.
+    updatedProduct.save();
     //THen send back the data, just for testing purposes.
-    res.status(200).json({ product });
+    res.status(200).send({ product: updatedProduct });
   });
 };
 
@@ -49,6 +49,6 @@ exports.deleteProduct = (req, res, next) => {
     //in mongo is is default _id
     //.deleteOne has exec which resolves the promise
     if (err) console.log("Delete One Error-----------------", err);
-    res.status(200).json({ product });
+    res.status(204).json({ product });
   });
 };
