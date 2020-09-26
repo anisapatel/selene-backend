@@ -5,10 +5,11 @@ const {
   readAllProducts,
   readProduct,
 } = require("../controllers/productsController");
+const { handleInvalidMethods } = require("../errors/errors");
 
 //reads products from database
 
-productsRouter.route("/").get(readAllProducts);
+productsRouter.route("/").get(readAllProducts).all(handleInvalidMethods);
 productsRouter.route("/:id").get(readProduct);
 
 module.exports = productsRouter;

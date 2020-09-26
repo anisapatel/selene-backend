@@ -3,7 +3,11 @@ const env = process.env.NODE_ENV || "development";
 const bodyParser = require("body-parser"); //retrieve values from req.body otherwise it is undefined
 const session = require("express-session"); //Require the session for saving user data and giving a user a unique experience.
 const cors = require("cors"); //enable cors for cross origin sharing
-
+const {
+  handle404s,
+  handleInvalidRoutes,
+  handleMongoDbErrors,
+} = require("./errors/errors");
 const mongoose = require("mongoose");
 const express = require("express"); // require instance of express library
 const app = express(); //invoke instance of express library
@@ -56,6 +60,10 @@ app.use(
 //All our endpoints.
 app.use("/api", apiRouter); //if the endpoint is ./api then go to the apiRouter.js file
 // }, 200);
+//these error handling middleware functions will be called before express's default error handling functions like 500 or 404
+app.use(handleMongoDbErrors);
+app.all("/*", handleInvalidRoutes); //catch any routes not found in the app
+app.use(handle404s);
 app.use(cors()); //cross origin requests
 // app.use(bodyParser.urlencoded({ extended: true }));
 
