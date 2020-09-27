@@ -5,9 +5,9 @@ const Schema = mongoose.Schema;
 //mongodb creates default id
 
 const product = new Schema({
-  name: String,
-  description: String,
-  price: Number,
+  name: { type: String, required: true },
+  description: { type: String, required: true },
+  price: { type: Number, required: true },
 });
 
 //To create a model, use the name of the model, and the schema with the properties of the model that  wil be inserted to the database.

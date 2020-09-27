@@ -6,10 +6,10 @@ const Schema = mongoose.Schema;
 //user will login but test data for now
 
 const user = new Schema({
-  name: String,
-  email: String,
-  username: String,
-  auth0_id: String,
+  name: { type: String, required: true },
+  email: { type: String, required: true },
+  username: { type: String, required: true },
+  auth0_id: { type: String, required: true },
 });
 
 module.exports = mongoose.model("User", user);
