@@ -9,14 +9,6 @@ exports.readAllProducts = (req, res, next) => {
       res.status(200).send(products);
     })
     .catch(next);
-  // Product.find({}).exec((err, products) => {
-  //   if (err) {
-  //     next(err);
-  //   }
-  //   //Always log the data you are returning from the database to check if you are receiving the right data.
-  //   // console.log("products-------------", products);
-  //   res.status(200).send(products);
-  // });
 };
 
 //getting a specified products so uses request parameter
@@ -34,16 +26,4 @@ exports.readProduct = (req, res, next) => {
       }
     })
     .catch(next);
-  // Product.findById(id).exec((err, product) => {
-  //   if (err) {
-  //     throw err;
-  //   }
-
-  //   if (!product) {
-  //     res.send(404);
-  //   }
-  //   // console.log("product--------------", product);
-
-  //   res.status(200).json({ product });
-  // });
 };

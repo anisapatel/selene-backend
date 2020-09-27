@@ -98,134 +98,205 @@ describe("/api", () => {
       //     });
       // });
     });
-    describe("PATCH", () => {
-      it("status: 200 Success, responds with the updated product based on product id", (done) => {
-        let newProduct = new Product({
-          name: "Tweed Skirt",
-          description: "Tweed woollen material",
-          price: "18",
-        });
-        newProduct.save((err, product) => {
+    it("status: 405 Invalid Method, handle invalid methods on /api/users", () => {
+      const invalidMethods = ["patch", "put", "del"];
+      let newProduct = new Product({
+        name: "Tweed Skirt",
+        description: "Tweed woollen material",
+        price: "18",
+      });
+      newProduct.save((err, product) => {
+        const promisesArr = invalidMethods.map((method) => {
           request(app)
-            .patch("/api/users/" + product.id)
-            .send({
-              name: "Silk blouse",
-              description: "Gold buttoned",
-              price: 25,
-            })
+            [method]("/api/users")
             .end((err, res) => {
-              product = res.body.product;
-              expect(res.status).to.eq(200);
-              expect(product.name).to.eq("Silk blouse");
-              expect(product).to.be.an("object");
-              expect(product).to.contain.property("description");
-              expect(product).to.contain.property("_id");
-              done();
+              expect(res.body.message).to.eq("Invalid Method");
             });
         });
-      });
-      it("status: 200 Success, responds with the updated product based on product id", (done) => {
-        let newProduct = new Product({
-          name: "Tweed Skirt",
-          description: "Tweed woollen material",
-          price: "18",
-        });
-        newProduct.save((err, product) => {
-          request(app)
-            .patch("/api/users/" + product.id)
-            .send({
-              name: "Silk blouse",
-              description: "Gold buttoned",
-            })
-            .end((err, res) => {
-              product = res.body.product;
-              expect(res.status).to.eq(200);
-              expect(product.name).to.eq("Silk blouse");
-              expect(product).to.be.an("object");
-              expect(product).to.contain.property("description");
-              expect(product).to.contain.property("_id");
-              done();
-            });
-        });
-      });
-      it("status: 404 Not Found, when passed a path that doesn't exist", (done) => {
-        let newProduct = new Product({
-          name: "Tweed Skirt",
-          description: "Tweed woollen material",
-          price: "18",
-        });
-        newProduct.save((err, product) => {
-          request(app)
-            .patch("/api/user" + product.id)
-            .send({
-              name: "Silk blouse",
-              description: "Gold buttoned",
-              price: 25,
-            })
-            .end((err, res) => {
-              product = res.body.product;
-              expect(res.status).to.eq(404);
-              done();
-            });
-        });
-      });
-      it("status: 404 Not Found, for a valid but non-existent product id", (done) => {
-        let id = mongoose.Types.ObjectId();
-        request(app)
-          .patch("/api/users" + id)
-          .send({ name: "Blouse" })
-          .end((err, res) => {
-            expect(res.status).to.eq(404);
-            expect(res.body.message).to.eq(
-              `Path /api/users${id} not found on this server!`
-            );
-            done();
-          });
-      });
-      it("status: 400 Bad Request, for an invalid product id", (done) => {
-        request(app)
-          .patch("/api/users/" + "berry")
-          .send({
-            name: "Silk blouse",
-            description: "Gold buttoned",
-            price: 25,
-          })
-          .end((err, res) => {
-            expect(res.status).to.eq(400);
-            done();
-          });
-      });
-      it("status: 200, attempted to patch using an empty object", (done) => {
-        let newProduct = new Product({
-          name: "Tweed Skirt",
-          description: "Tweed woollen material",
-          price: "18",
-        });
-        newProduct.save((err, product) => {
-          request(app)
-            .patch("/api/users/" + product.id)
-            .send({})
-            .end((err, res) => {
-              expect(res.status).to.eq(200);
-              done();
-            });
-        });
+        return Promise.all(promisesArr);
       });
     });
-    describe("DELETE", () => {
-      it("status: 204 Success, deletes a product based on product id", (done) => {
-        let newProduct = new Product({
-          name: "Skirt",
-          description: "Woollen material",
-          price: "19",
+    describe("/users/:id", () => {
+      describe("PATCH", () => {
+        it("status: 200 Success, responds with the updated product based on product id", (done) => {
+          let newProduct = new Product({
+            name: "Tweed Skirt",
+            description: "Tweed woollen material",
+            price: "18",
+          });
+          newProduct.save((err, product) => {
+            request(app)
+              .patch("/api/users/" + product.id)
+              .send({
+                name: "Silk blouse",
+                description: "Gold buttoned",
+                price: 25,
+              })
+              .end((err, res) => {
+                product = res.body.product;
+                expect(res.status).to.eq(200);
+                expect(product.name).to.eq("Silk blouse");
+                expect(product).to.be.an("object");
+                expect(product).to.contain.property("description");
+                expect(product).to.contain.property("_id");
+                done();
+              });
+          });
         });
-        newProduct.save((err, product) => {
+        it("status: 200 Success, responds with the updated product based on product id", (done) => {
+          let newProduct = new Product({
+            name: "Tweed Skirt",
+            description: "Tweed woollen material",
+            price: "18",
+          });
+          newProduct.save((err, product) => {
+            request(app)
+              .patch("/api/users/" + product.id)
+              .send({
+                name: "Silk blouse",
+                description: "Gold buttoned",
+              })
+              .end((err, res) => {
+                product = res.body.product;
+                expect(res.status).to.eq(200);
+                expect(product.name).to.eq("Silk blouse");
+                expect(product).to.be.an("object");
+                expect(product).to.contain.property("description");
+                expect(product).to.contain.property("_id");
+                done();
+              });
+          });
+        });
+        it("status: 404 Not Found, when passed a path that doesn't exist", (done) => {
+          let newProduct = new Product({
+            name: "Tweed Skirt",
+            description: "Tweed woollen material",
+            price: "18",
+          });
+          newProduct.save((err, product) => {
+            request(app)
+              .patch("/api/user" + product.id)
+              .send({
+                name: "Silk blouse",
+                description: "Gold buttoned",
+                price: 25,
+              })
+              .end((err, res) => {
+                product = res.body.product;
+                expect(res.status).to.eq(404);
+                done();
+              });
+          });
+        });
+        it("status: 404 Not Found, for a valid but non-existent product id", (done) => {
+          let id = mongoose.Types.ObjectId();
           request(app)
-            .delete("/api/users/" + product.id)
+            .patch("/api/users" + id)
+            .send({ name: "Blouse" })
             .end((err, res) => {
-              expect(res.status).to.eq(204);
+              expect(res.status).to.eq(404);
+              expect(res.body.message).to.eq(
+                `Path /api/users${id} not found on this server!`
+              );
               done();
             });
+        });
+        it("status: 400 Bad Request, for an invalid product id", (done) => {
+          request(app)
+            .patch("/api/users/" + "berry")
+            .send({
+              name: "Silk blouse",
+              description: "Gold buttoned",
+              price: 25,
+            })
+            .end((err, res) => {
+              expect(res.status).to.eq(400);
+              done();
+            });
+        });
+        it("status: 200, attempted to patch using an empty object", (done) => {
+          let newProduct = new Product({
+            name: "Tweed Skirt",
+            description: "Tweed woollen material",
+            price: "18",
+          });
+          newProduct.save((err, product) => {
+            request(app)
+              .patch("/api/users/" + product.id)
+              .send({})
+              .end((err, res) => {
+                expect(res.status).to.eq(200);
+                done();
+              });
+          });
+        });
+      });
+      describe("DELETE", () => {
+        it("status: 204 Success, deletes a product based on product id", (done) => {
+          let newProduct = new Product({
+            name: "Skirt",
+            description: "Woollen material",
+            price: "19",
+          });
+          newProduct.save((err, product) => {
+            request(app)
+              .delete("/api/users/" + product.id)
+              .end((err, res) => {
+                expect(res.status).to.eq(204);
+                done();
+              });
+          });
+        });
+        it("status: 400 Bad Request, deleting an invalid product id", (done) => {
+          let newProduct = new Product({
+            name: "Skirt",
+            description: "Woollen material",
+            price: "19",
+          });
+          newProduct.save((err, product) => {
+            request(app)
+              .delete("/api/users/" + "POPPY")
+              .end((err, res) => {
+                expect(res.status).to.eq(400);
+                done();
+              });
+          });
+        });
+        it("status: 404 Not Found, when passed a path that doesn't exist", (done) => {
+          let newProduct = new Product({
+            name: "Skirt",
+            description: "Woollen material",
+            price: "19",
+          });
+          newProduct.save((err, product) => {
+            request(app)
+              .delete("/api/usr/" + product.id)
+              .end((err, res) => {
+                expect(res.status).to.eq(404);
+                expect(res.body.message).to.eq(
+                  `Path /api/usr/${product.id} not found on this server!`
+                );
+                done();
+              });
+          });
+        });
+      });
+      it("status: 405 Invalid Method, handle invalid methods on /api/users/:id", () => {
+        const invalidMethods = ["post", "put", "get"];
+        let newProduct = new Product({
+          name: "Tweed Skirt",
+          description: "Tweed woollen material",
+          price: "18",
+        });
+        newProduct.save((err, product) => {
+          const promisesArr = invalidMethods.map((method) => {
+            request(app)
+              [method]("/api/users/" + product.id)
+              .end((err, res) => {
+                expect(res.body.message).to.eq("Invalid Method");
+              });
+          });
+          return Promise.all(promisesArr);
         });
       });
     });
@@ -263,75 +334,97 @@ describe("/api", () => {
             done();
           });
       });
-      it("status: 405 Invalid Method, handle invalid methods on /api/products", () => {
-        const invalidMethods = ["patch", "put", "del", "post"];
-        const promisesArr = invalidMethods.map((method) => {
-          request(app)
-            [method]("/api/products")
-            .end((err, res) => {
-              expect(res.body.message).to.eq("Invalid Method");
-            });
-        });
-        return Promise.all(promisesArr);
-      });
     });
-    describe("GET/:id", () => {
-      it("status: 200 Success, responds with the product based on product id", (done) => {
-        let newProduct = new Product({
-          name: "Tweed Skirt",
-          description: "Tweed woollen material",
-          price: "18",
-        });
-        newProduct.save((err, product) => {
-          request(app)
-            .get("/api/products/" + product.id)
-            .end((err, res) => {
-              product = res.body.product;
-              expect(res.status).to.eq(200);
-              expect(product.price).to.eq(18);
-              expect(product).to.be.an("object");
-              expect(product).to.contain.property("description");
-              expect(product).to.contain.property("_id");
-              done();
-            });
-        });
+    it("status: 405 Invalid Method, handle invalid methods on /api/products", () => {
+      const invalidMethods = ["patch", "put", "del", "post"];
+      const promisesArr = invalidMethods.map((method) => {
+        request(app)
+          [method]("/api/products")
+          .end((err, res) => {
+            expect(res.body.message).to.eq("Invalid Method");
+          });
       });
-      it("status: 404 Not Found, when passed a path that does not exist", (done) => {
-        let newProduct = new Product({
-          name: "Tweed Skirt",
-          description: "Tweed woollen material",
-          price: "18",
+      return Promise.all(promisesArr);
+    });
+    describe("/products/:id", () => {
+      describe("GET", () => {
+        it("status: 200 Success, responds with the product based on product id", (done) => {
+          let newProduct = new Product({
+            name: "Tweed Skirt",
+            description: "Tweed woollen material",
+            price: "18",
+          });
+          newProduct.save((err, product) => {
+            request(app)
+              .get("/api/products/" + product.id)
+              .end((err, res) => {
+                product = res.body.product;
+                expect(res.status).to.eq(200);
+                expect(product.price).to.eq(18);
+                expect(product).to.be.an("object");
+                expect(product).to.contain.property("description");
+                expect(product).to.contain.property("_id");
+                done();
+              });
+          });
         });
-        newProduct.save((err, product) => {
+        it("status: 404 Not Found, when passed a path that does not exist", (done) => {
+          let newProduct = new Product({
+            name: "Tweed Skirt",
+            description: "Tweed woollen material",
+            price: "18",
+          });
+          newProduct.save((err, product) => {
+            request(app)
+              .get("/api/produc" + product.id)
+              .end((err, res) => {
+                expect(res.status).to.eq(404);
+                expect(res.body.message).to.eq(
+                  `Path /api/produc${product.id} not found on this server!`
+                );
+                done();
+              });
+          });
+        });
+        it("status: 404 Not Found, for a valid but nonexistent id", (done) => {
+          let prodId = mongoose.Types.ObjectId();
           request(app)
-            .get("/api/produc/" + product.id)
+            .get("/api/products/" + prodId)
             .end((err, res) => {
-              product = res.body.product;
               expect(res.status).to.eq(404);
+              expect(res.body.message).to.eq(
+                `Cannot find a product with that productId: ${prodId}`
+              );
+              done();
+            });
+        });
+        it("status: 400 Bad Request, for an invalid id", (done) => {
+          request(app)
+            .get("/api/products/" + "tomato")
+            .end((err, res) => {
+              expect(res.status).to.eq(400);
+              expect(res.body.message).to.eq("Bad request");
               done();
             });
         });
       });
-      it("status: 404 Not Found, for a valid but nonexistent id", (done) => {
-        let prodId = mongoose.Types.ObjectId();
-        request(app)
-          .get("/api/products/" + prodId)
-          .end((err, res) => {
-            expect(res.status).to.eq(404);
-            expect(res.body.message).to.eq(
-              `Cannot find a product with that productId: ${prodId}`
-            );
-            done();
+      it("status: 405 Invalid Method, handle invalid methods on /api/products by id", () => {
+        const invalidMethods = ["patch", "put", "del", "post"];
+        let newProduct = new Product({
+          name: "Tweed Skirt",
+          description: "Tweed woollen material",
+          price: "18",
+        });
+        newProduct.save((err, product) => {
+          const promisesArr = invalidMethods.map((method) => {
+            request(app)
+              [method]("/api/products/" + product.id)
+              .end((err, res) => {
+                expect(res.body.message).to.eq("Invalid Method");
+              });
           });
-      });
-      it("status: 400 Bad Request, for an invalid id", (done) => {
-        request(app)
-          .get("/api/products/" + "tomato")
-          .end((err, res) => {
-            expect(res.status).to.eq(400);
-            expect(res.body.message).to.eq("Bad request");
-            done();
-          });
+          return Promise.all(promisesArr);
+        });
       });
     });
   });

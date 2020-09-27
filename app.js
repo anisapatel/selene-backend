@@ -7,6 +7,7 @@ const {
   handle404s,
   handleInvalidRoutes,
   handleMongoDbErrors,
+  handle500s,
 } = require("./errors/errors");
 const mongoose = require("mongoose");
 const express = require("express"); // require instance of express library
@@ -64,6 +65,7 @@ app.use("/api", apiRouter); //if the endpoint is ./api then go to the apiRouter.
 app.use(handleMongoDbErrors);
 app.all("/*", handleInvalidRoutes); //catch any routes not found in the app
 app.use(handle404s);
+app.use(handle500s);
 app.use(cors()); //cross origin requests
 // app.use(bodyParser.urlencoded({ extended: true }));
 

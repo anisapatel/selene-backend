@@ -2,10 +2,13 @@ const Product = require("../models/productsModel");
 const User = require("../models/usersModel");
 //gets admin users
 exports.getAdminUsers = (req, res, next) => {
-  User.find({}).exec((err, users) => {
-    if (err) console.log("Find Admin Users Error---------------", err);
-    res.status(200).json({ users });
-  });
+  User.find({})
+    .exec()
+    .then((users) => {
+      res.status(200).json({ users });
+    })
+    .catch(next);
+  // if (err) console.log("Find Admin Users Error---------------", err);
 };
 
 //inserting a product into the database
@@ -56,28 +59,19 @@ exports.updateProduct = (req, res, next) => {
       }
     })
     .catch(next);
-
-  // Product.findById(id).exec((err, updatedProduct) => {
-  //   if (err) console.log("Updated Product-----------------", err);
-  //   updatedProduct.name = name;
-  //   updatedProduct.description = description;
-  //   updatedProduct.price = price;
-  //   //Save the updatedProduct with updated data.
-  //   updatedProduct.save();
-  //   //THen send back the data, just for testing purposes.
-  //   res.status(200).send({ product: updatedProduct });
-  // });
 };
 
 //delete a product by id
 exports.deleteProduct = (req, res, next) => {
   const { id } = req.params;
   //Use an object to delete the specified product.
-  Product.deleteOne({ _id: id }).exec((err, product) => {
-    //delete one method takes an obejct with the property you want the criteria to be
-    //in mongo is is default _id
-    //.deleteOne has exec which resolves the promise
-    if (err) console.log("Delete One Error-----------------", err);
-    res.status(204).json({ product });
-  });
+  Product.deleteOne({ _id: id })
+    .exec()
+    .then((product) => {
+      res.status(204).json({ product });
+    })
+    .catch(next);
+  //delete one method takes an obejct with the property you want the criteria to be
+  //in mongo is is default _id
+  //.deleteOne has exec which resolves the promise
 };

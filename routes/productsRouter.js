@@ -10,6 +10,6 @@ const { handleInvalidMethods } = require("../errors/errors");
 //reads products from database
 
 productsRouter.route("/").get(readAllProducts).all(handleInvalidMethods);
-productsRouter.route("/:id").get(readProduct);
+productsRouter.route("/:id").get(readProduct).all(handleInvalidMethods);
 
 module.exports = productsRouter;

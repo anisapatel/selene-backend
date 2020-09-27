@@ -23,8 +23,14 @@ exports.handleInvalidRoutes = (req, res, next) => {
 
 exports.handle404s = (err, req, res, next) => {
   if (err.status) {
-    res.status(err.status).send({ msg: err.msg });
+    res.status(err.status).send({ message: err.message });
   } else next(err);
+};
+
+exports.handle500s = (err, req, res, next) => {
+  if (err) {
+    res.status(500).send({ message: "Internal Server Error!" });
+  }
 };
 
 exports.handleInvalidMethods = (req, res, next) => {
