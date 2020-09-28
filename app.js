@@ -27,7 +27,7 @@ if (env === "test") {
   );
 } else {
   mongoose.connect(
-    process.env.MONGODB_URI || process.env.CONNECTION_STRING,
+    process.env.CONNECTION_STRING,
     { useNewUrlParser: true, useUnifiedTopology: true },
     (err) => {
       if (err) {
