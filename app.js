@@ -60,6 +60,7 @@ app.use(
 // setTimeout(() => {
 //All our endpoints.
 app.use("/api", apiRouter); //if the endpoint is ./api then go to the apiRouter.js file
+
 // }, 200);
 //these error handling middleware functions will be called before express's default error handling functions like 500 or 404
 app.use(handleMongoDbErrors);

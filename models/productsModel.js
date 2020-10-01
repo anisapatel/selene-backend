@@ -8,6 +8,7 @@ const product = new Schema({
   name: { type: String, required: true },
   description: { type: String, required: true },
   price: { type: Number, required: true },
+  picture: { type: String },
 });
 
 //To create a model, use the name of the model, and the schema with the properties of the model that  wil be inserted to the database.

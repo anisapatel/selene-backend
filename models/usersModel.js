@@ -10,6 +10,7 @@ const user = new Schema({
   email: { type: String, required: true },
   username: { type: String, required: true },
   auth0_id: { type: String, required: true },
+  profile_picture: { type: String },
 });
 
 module.exports = mongoose.model("User", user);
